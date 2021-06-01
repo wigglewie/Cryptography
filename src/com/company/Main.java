@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
 //        String sentence = "ТООГ_СШЕЕЮТАПЛРИ";
+        var test = "test";
         String sentence = "_СШЕ";
         int x = 4;
         int y = 1;
