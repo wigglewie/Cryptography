@@ -4,15 +4,59 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String sentence = "ТООГ_СШЕЕЮТАПЛРИ";
-        int x = 4;
-        int y = 4;
-        int xSequenceValue = 1342;
-        int ySequenceValue = 4321;
-        System.out.println(task1(sentence, x, y, xSequenceValue, ySequenceValue));
+        var sentenceTask1 = "ТООГ_СШЕЕЮТАПЛРИ";
+        var x = 4;
+        var y = 4;
+        var xSequenceValue = 1342;
+        var ySequenceValue = 4321;
+        System.out.println(task1(sentenceTask1, x, y, xSequenceValue, ySequenceValue));
 
+        var sentenceTask2 = "ЕВИНЖРЫЕА";
+        var magicSquareSequence = 618753294;
+        var magicSquareSize = 3;
+        System.out.println(task2(sentenceTask2, magicSquareSequence, magicSquareSize));
+
+        var sentenceTask3 = "Мы должны признать очевидное: понимают лишь те, кто хочет понять";
+        var numeralKey = 25;
+        var wordKey = "";
+        System.out.println(task3(sentenceTask3, numeralKey, wordKey));
     }
 
+    private static String task3(String sentenceOriginal, int numeralKey, String wordKey) {
+        var result = "";
+
+        char[] chars = sentenceOriginal.toUpperCase().toCharArray();
+        var stringBuilder = new StringBuilder();
+        for (char ch : chars) {
+            if (!(ch == ',' || ch == '.' || ch == '?' || ch == '!' || ch == ':' || ch == ';')) {
+                if (ch == ' '){
+                    stringBuilder.append('_');
+                    continue;
+                }
+                stringBuilder.append(ch);
+            }
+        }
+        var sentenceToEncrypt = stringBuilder.toString();
+
+        if (wordKey.isBlank()) {
+            return encryptWithoutWordKey(sentenceToEncrypt, numeralKey);
+        }
+
+        //TODO encrypt with word key
+
+        return result;
+    }
+
+    private static String encryptWithoutWordKey(String sentence, int numeralKey) {
+        var result = "";
+
+
+
+
+        return result;
+    }
+
+    //двойная перестановка
     private static String task1(String sentence, int x, int y, int xSequenceValue, int ySequenceValue) {
         StringBuilder result = new StringBuilder();
 
@@ -41,7 +85,7 @@ public class Main {
         }
 
         //getting matrix filled with values
-        int step = 0;
+        var step = 0;
         for (int j = 0; j < y; j++) {
             for (int z = 0; z < x; z++) {
                 matrix[j][z] = sentenceAsCharArray[step];
@@ -69,6 +113,43 @@ public class Main {
                 result.append(matrixProperY[j][z]);
             }
         }
+        return result.toString();
+    }
+
+    //магический квадрат
+    private static String task2(String sentence, int magicSquareSequence, int magicSquareSize) {
+        var result = new StringBuilder();
+
+        char[] chars = sentence.toCharArray();
+        char[] resultArray = new char[magicSquareSize * magicSquareSize];
+
+        int[] sequence = new int[magicSquareSize * magicSquareSize];
+        for (int j = sequence.length - 1; j >= 0; j--) {
+            sequence[j] = magicSquareSequence % 10;
+            magicSquareSequence /= 10;
+        }
+
+        var step = 0;
+        int[][] matrix = new int[magicSquareSize][magicSquareSize];
+        for (int i = 0; i < magicSquareSize; i++) {
+            for (int j = 0; j < magicSquareSize; j++) {
+                matrix[i][j] = sequence[step];
+                step++;
+            }
+        }
+
+        step = 0;
+        for (int i = 0; i < magicSquareSize; i++) {
+            for (int j = 0; j < magicSquareSize; j++) {
+                resultArray[matrix[i][j] - 1] = chars[step];
+                step++;
+            }
+        }
+
+        for (char ch : resultArray) {
+            result.append(ch);
+        }
+
         return result.toString();
     }
 }
