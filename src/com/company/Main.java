@@ -9,12 +9,12 @@ public class Main {
         var y = 4;
         var xSequenceValue = 1342;
         var ySequenceValue = 4321;
-        System.out.println(task1(sentenceTask1, x, y, xSequenceValue, ySequenceValue));
+        System.out.println(decryptDoubleTransportation(sentenceTask1, x, y, xSequenceValue, ySequenceValue));
 
         var sentenceTask2 = "ЕВИНЖРЫЕА";
         var magicSquareSequence = 618753294;
         var magicSquareSize = 3;
-        System.out.println(task2(sentenceTask2, magicSquareSequence, magicSquareSize));
+        System.out.println(decryptMagicSquare(sentenceTask2, magicSquareSequence, magicSquareSize));
 
         var sentenceTask3 = "Мы должны признать очевидное: понимают лишь те, кто хочет понять";
         var numeralKey = 25;
@@ -57,8 +57,12 @@ public class Main {
     }
 
     //двойная перестановка
-    private static String task1(String sentence, int x, int y, int xSequenceValue, int ySequenceValue) {
+    private static String decryptDoubleTransportation(String sentence, int x, int y, int xSequenceValue, int ySequenceValue) {
         StringBuilder result = new StringBuilder();
+
+        if (sentence.contains("|")) {
+            sentence = sentence.replace("|", "");
+        }
 
         char[] sentenceAsCharArray = sentence.toCharArray();
 
@@ -66,14 +70,12 @@ public class Main {
         char[][] matrixProperX = new char[y][x];
         char[][] matrixProperY = new char[y][x];
 
-        //getting x sequence
         int[] xSequence = new int[x];
         for (int j = xSequence.length - 1; j >= 0; j--) {
             xSequence[j] = xSequenceValue % 10;
             xSequenceValue /= 10;
         }
 
-        //getting y sequence
         int[] ySequence = new int[x];
         for (int j = ySequence.length - 1; j >= 0; j--) {
             ySequence[j] = ySequenceValue % 10;
@@ -84,7 +86,6 @@ public class Main {
             return "error";
         }
 
-        //getting matrix filled with values
         var step = 0;
         for (int j = 0; j < y; j++) {
             for (int z = 0; z < x; z++) {
@@ -93,21 +94,18 @@ public class Main {
             }
         }
 
-        //filtering X
         for (int j = 0; j < y; j++) {
             for (int z = 0; z < x; z++) {
                 matrixProperX[j][z] = matrix[j][xSequence[z] - 1];
             }
         }
 
-        //filtering Y
         for (int j = 0; j < y; j++) {
             for (int z = 0; z < x; z++) {
                 matrixProperY[j][z] = matrixProperX[ySequence[j] - 1][z];
             }
         }
 
-        //getting result
         for (int j = 0; j < y; j++) {
             for (int z = 0; z < x; z++) {
                 result.append(matrixProperY[j][z]);
@@ -117,7 +115,7 @@ public class Main {
     }
 
     //магический квадрат
-    private static String task2(String sentence, int magicSquareSequence, int magicSquareSize) {
+    private static String decryptMagicSquare(String sentence, int magicSquareSequence, int magicSquareSize) {
         var result = new StringBuilder();
 
         char[] chars = sentence.toCharArray();
