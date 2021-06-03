@@ -2,10 +2,7 @@ package com.company;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CryptoCesar {
@@ -27,6 +24,9 @@ public class CryptoCesar {
         chars = sentenceToEncrypt.toCharArray();
         resultAsList = new ArrayList<>(33);
         sequence = new ArrayList<>(33);
+        for (char ch : alphabet) {
+            sequence.add('0');
+        }
 
         if (wordKey == null || wordKey.isBlank()) {
             return encryptWithoutWordKey(key);
@@ -34,13 +34,23 @@ public class CryptoCesar {
 
         Set<Character> uniqueWordKey = wordKey.chars().mapToObj(c -> (char) c).collect(Collectors.toCollection(LinkedHashSet::new));
 
-        char[] values = new char[33];
+        Character[] values = new Character[33];
 
         //FIX
         var step = key;
         for (char ch : uniqueWordKey) {
             values[step] = ch;
             step++;
+        }
+
+        step = key;
+        for (char ch : uniqueWordKey) {
+            try {
+                sequence.set(step, ch);
+                step++;
+            } catch (Exception e){
+                System.out.println();
+            }
         }
 
         return result;
