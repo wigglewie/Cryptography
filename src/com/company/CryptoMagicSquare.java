@@ -7,7 +7,7 @@ public class CryptoMagicSquare {
     public String encrypt(String sentence, int[] sequence, int size) {
         var result = new StringBuilder();
 
-        sentence = formatSentence(sentence);
+        sentence = formatForEncryption(sentence);
 
         if (!isValid(sentence, sequence, size)) {
             return cryptoType + "error";
@@ -43,7 +43,7 @@ public class CryptoMagicSquare {
     public String decrypt(String sentence, int[] sequence, int size) {
         var result = new StringBuilder();
 
-        sentence = sentence.replace("|", "");
+        sentence = formatForDecryption(sentence);
 
         if (!isValid(sentence, sequence, size)) {
             return cryptoType + "error";
@@ -80,7 +80,19 @@ public class CryptoMagicSquare {
         return sequence.length / size == size && sentence.length() == size * size;
     }
 
-    private String formatSentence(String sentence) {
+    private String formatForEncryption(String sentence) {
+        sentence = sentence
+                .replace(" ", "_")
+                .replace(",", "")
+                .replace(".", "")
+                .replace(";", "")
+                .replace(":", "")
+                .replace("!", "")
+                .replace("?", "");
+        return sentence;
+    }
+
+    private String formatForDecryption(String sentence) {
         sentence = sentence
                 .replace(" ", "_")
                 .replace(",", "")
