@@ -3,7 +3,7 @@ package com.company;
 public class Main {
 
     /**
-     * Cesar: en, de
+     * Cesar: de
      * DT: DONE
      * Magic: DONE
      */
@@ -55,8 +55,16 @@ public class Main {
 
         var sentenceEncryptCesar = "Разума лишает не сомнение, а уверенность";
         var keyEncryptCesar = 10;
-        var wordKeyEncryptCesar = "КРИПТОГРАФИЯ";
+        var wordKeyEncryptCesar = "";
 
         System.out.println(cesar.encrypt(sentenceEncryptCesar, keyEncryptCesar, wordKeyEncryptCesar));
+
+
+//        var sentenceDecryptCesar = "АХЭБПХ_ИЮЖХЪЯ_ТЪ_ФОПТЪТЮЪ_Х_БЧЪАЪТТОФЯМ";
+        var sentenceDecryptCesar = "ЪЙСЭЦЙ_ХТВЙОЬ_ЧО_ЫШЦЧОЧТО_Й_ЭЛОЪОЧЧШЫЬЁ";
+        var keyDecryptCesar = 10;
+        var wordKeyDecryptCesar = "";
+
+        System.out.println(cesar.decrypt(sentenceDecryptCesar, keyDecryptCesar, wordKeyDecryptCesar));
     }
 }

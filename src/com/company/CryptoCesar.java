@@ -1,7 +1,5 @@
 package com.company;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,39 +9,81 @@ public class CryptoCesar {
 
     char[] chars = new char[33];
 
-    private List<Character> resultAsList;
+    private List<Character> resultAsList = new ArrayList<>();
     private List<Character> sequence;
 
-    private String alphabetString = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+    private final String alphabetString = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
     private List<Character> alphabet = alphabetString.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
 
     public String encrypt(String sentence, int key, String wordKey) {
-        var result = "";
 
         var sentenceToEncrypt = formatForEncryption(sentence.toUpperCase());
         chars = sentenceToEncrypt.toCharArray();
-        resultAsList = new ArrayList<>(33);
+
         sequence = new ArrayList<>(33);
-        for (char ch : alphabet) {
+        for (char ignored : alphabet) {
             sequence.add('0');
         }
 
         if (wordKey == null || wordKey.isBlank()) {
-            return encryptWithoutWordKey(key);
+            sequence = getSequenceWithoutWordKey(key);
+        } else {
+            sequence = getSequenceWithWordKey(key, wordKey);
         }
+
+        return cryptoType + getEncryptionResult(sequence);
+    }
+
+    public String decrypt(String sentence, int key, String wordKey) {
+
+        var sentenceToEncrypt = formatForDecryption(sentence.toUpperCase());
+        chars = sentenceToEncrypt.toCharArray();
+
+        sequence = new ArrayList<>(33);
+        for (char ignored : alphabet) {
+            sequence.add('0');
+        }
+
+        if (wordKey == null || wordKey.isBlank()) {
+            sequence = getSequenceWithoutWordKey(key);
+        } else {
+            sequence = getSequenceWithWordKey(key, wordKey);
+        }
+
+        return cryptoType + getDecryptionResult(sequence);
+    }
+
+    private String getDecryptionResult(List<Character> sequence) {
+
+        var result = new StringBuilder();
+        alphabet = alphabetString.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+        resultAsList = new ArrayList<>();
+
+        for (char ch : chars) {
+            int index = sequence.indexOf(ch);
+            try {
+                resultAsList.add(alphabet.get(index));
+            } catch (Exception e) {
+                resultAsList.add('_');
+            }
+        }
+
+        for (char ch : resultAsList) {
+            if (ch == '_') {
+                result.append(' ');
+                continue;
+            }
+            result.append(ch);
+        }
+
+        return result.toString();
+    }
+
+    private List<Character> getSequenceWithWordKey(int key, String wordKey) {
 
         Set<Character> uniqueWordKey = wordKey.chars().mapToObj(c -> (char) c).collect(Collectors.toCollection(LinkedHashSet::new));
 
-        Character[] values = new Character[33];
-
-        //FIX
         var step = key;
-        for (char ch : uniqueWordKey) {
-            values[step] = ch;
-            step++;
-        }
-
-        step = key;
         for (char ch : uniqueWordKey) {
             try {
                 sequence.set(step, ch);
@@ -60,21 +100,27 @@ public class CryptoCesar {
         }
 
         for (int i = 0; i < alphabet.size(); i++) {
-            try{
+            try {
                 sequence.set(step, alphabet.get(i));
-                alphabet.remove(i);
+                alphabet.set(i, null);
                 step++;
             } catch (Exception e) {
                 break;
             }
         }
 
-        return result;
+        alphabet.removeIf(Objects::isNull);
+
+        for (int i = 0; i < key; i++) {
+            sequence.set(i, alphabet.get(i));
+        }
+
+        return sequence;
     }
 
-    @NotNull
-    private String encryptWithoutWordKey(int key) {
-        var result = new StringBuilder();
+    private List<Character> getSequenceWithoutWordKey(int key) {
+
+        sequence = new ArrayList<>();
 
         var step = 0;
         for (int i = key; i < alphabet.size(); i++) {
@@ -94,6 +140,15 @@ public class CryptoCesar {
             }
         }
 
+        return sequence;
+    }
+
+    private String getEncryptionResult(List<Character> sequence) {
+
+        var result = new StringBuilder();
+        alphabet = alphabetString.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+        resultAsList = new ArrayList<>();
+
         for (char ch : chars) {
             int index = alphabet.indexOf(ch);
             try {
@@ -107,7 +162,7 @@ public class CryptoCesar {
             result.append(ch);
         }
 
-        return cryptoType + result;
+        return result.toString();
     }
 
     private String formatForEncryption(String sentence) {
@@ -121,6 +176,12 @@ public class CryptoCesar {
                 .replace("?", "")
                 .replace("—", "")
                 .replace("-", "");
+        return sentence;
+    }
+
+    private String formatForDecryption(String sentence) {
+        sentence = sentence
+                .replace("|", "");
         return sentence;
     }
 }
