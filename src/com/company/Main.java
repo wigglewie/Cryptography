@@ -55,16 +55,23 @@ public class Main {
 
         var sentenceEncryptCesar = "Разума лишает не сомнение, а уверенность";
         var keyEncryptCesar = 10;
-        var wordKeyEncryptCesar = "";
+        var wordKeyEncryptCesar = "КРИПТОГРАФИЯ";
 
         System.out.println(cesar.encrypt(sentenceEncryptCesar, keyEncryptCesar, wordKeyEncryptCesar));
 
 
 //        var sentenceDecryptCesar = "АХЭБПХ_ИЮЖХЪЯ_ТЪ_ФОПТЪТЮЪ_Х_БЧЪАЪТТОФЯМ";
-        var sentenceDecryptCesar = "ЪЙСЭЦЙ_ХТВЙОЬ_ЧО_ЫШЦЧОЧТО_Й_ЭЛОЪОЧЧШЫЬЁ";
+        var sentenceDecryptCesar = "АХЭБПХ_ИЮЖХЪЯ_ТЪ_ФОПТЪТЮЪ_Х_БЧЪАЪТТОФЯМ";
         var keyDecryptCesar = 10;
-        var wordKeyDecryptCesar = "";
+        var wordKeyDecryptCesar = "КРИПТОГРАФИЯ";
 
         System.out.println(cesar.decrypt(sentenceDecryptCesar, keyDecryptCesar, wordKeyDecryptCesar));
+
+
+        // ===== Двойной квадрат Уинстона =====
+        CryptoWheatstone wheatstone = new CryptoWheatstone();
+
+        var sentenceEncryptWheatstone = "Успех — это когда ты девять раз упал, но десять раз поднялсяя";
+        System.out.println(wheatstone.encrypt(sentenceEncryptWheatstone));
     }
 }

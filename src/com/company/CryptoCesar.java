@@ -118,6 +118,8 @@ public class CryptoCesar {
         return sequence;
     }
 
+
+
     private List<Character> getSequenceWithoutWordKey(int key) {
 
         sequence = new ArrayList<>();
