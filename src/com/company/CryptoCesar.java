@@ -15,7 +15,7 @@ public class CryptoCesar {
     private List<Character> sequence;
 
     private String alphabetString = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-    private final List<Character> alphabet = alphabetString.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+    private List<Character> alphabet = alphabetString.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
 
     public String encrypt(String sentence, int key, String wordKey) {
         var result = "";
@@ -48,8 +48,24 @@ public class CryptoCesar {
             try {
                 sequence.set(step, ch);
                 step++;
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println();
+            }
+        }
+
+        for (Character ch : uniqueWordKey) {
+            if (alphabet.contains(ch)) {
+                alphabet.remove(ch);
+            }
+        }
+
+        for (int i = 0; i < alphabet.size(); i++) {
+            try{
+                sequence.set(step, alphabet.get(i));
+                alphabet.remove(i);
+                step++;
+            } catch (Exception e) {
+                break;
             }
         }
 
