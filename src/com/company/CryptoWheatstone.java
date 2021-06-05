@@ -46,6 +46,8 @@ public class CryptoWheatstone {
 
     private String doMagic(String sentence) {
 
+        var result = new StringBuilder();
+
         sentence = sentence.replace(' ', '_');
         char[] chars = sentence.toUpperCase().toCharArray();
         List<List> bigrams = new ArrayList<>();
@@ -66,7 +68,7 @@ public class CryptoWheatstone {
             }
         }
 
-//        Collections.shuffle(sequence);
+        Collections.shuffle(sequence);
 
         char[][] matrix1 = new char[7][5];
         int step = 0;
@@ -77,8 +79,8 @@ public class CryptoWheatstone {
             }
         }
 
-//        Collections.shuffle(sequence);
-        Collections.reverse(sequence);
+        Collections.shuffle(sequence);
+//        Collections.reverse(sequence);
 
         char[][] matrix2 = new char[7][5];
         step = 0;
@@ -89,17 +91,21 @@ public class CryptoWheatstone {
             }
         }
 
-        for (List list : bigrams) {
+        for (var list : bigrams) {
             char o1 = (char) list.get(0);
             char o2 = (char) list.get(1);
             int[] firstIndex = getIndex(matrix1, o1);
             int[] secondIndex = getIndex(matrix2, o2);
 
-            System.out.println();
+            if (firstIndex[0] == secondIndex[0]) {
+                result.append(matrix2[firstIndex[0]][firstIndex[1]]).append(matrix1[secondIndex[0]][secondIndex[1]]).append(' ');
+                continue;
+            }
+
+            result.append(matrix2[firstIndex[0]][secondIndex[1]]).append(matrix1[secondIndex[0]][firstIndex[1]]).append(' ');
         }
 
-
-        return "result";
+        return result.toString();
     }
 
     private int[] getIndex(char[][] matrix, char o) {
@@ -107,7 +113,7 @@ public class CryptoWheatstone {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 5; j++) {
-                if (matrix[i][j] == o){
+                if (matrix[i][j] == o) {
                     result[0] = i;
                     result[1] = j;
                 }
