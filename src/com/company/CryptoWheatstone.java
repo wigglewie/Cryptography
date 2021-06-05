@@ -68,7 +68,8 @@ public class CryptoWheatstone {
             }
         }
 
-        Collections.shuffle(sequence);
+//        Collections.shuffle(sequence);
+        shuffleInProperWay1();
 
         char[][] matrix1 = new char[7][5];
         int step = 0;
@@ -79,8 +80,9 @@ public class CryptoWheatstone {
             }
         }
 
-        Collections.shuffle(sequence);
+//        Collections.shuffle(sequence);
 //        Collections.reverse(sequence);
+        shuffleInProperWay2();
 
         char[][] matrix2 = new char[7][5];
         step = 0;
@@ -122,5 +124,15 @@ public class CryptoWheatstone {
         return result;
     }
 
+    private void shuffleInProperWay1() {
+        var str = "БЮГЕЗХЧЮЦАВ—ФОКПИБРЯДЭЖУН_ТМЛЪЬШСЫЩ";
+        sequence = str.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+
+    }
+
+    private void shuffleInProperWay2() {
+        var str = "ЯАЮБОФЩДС-ЛРВЕЖЦЭШМКНУГИЧЫ—ПЗХЬ.ЪТ,";
+        sequence = str.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+    }
 
 }
